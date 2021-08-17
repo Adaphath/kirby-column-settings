@@ -1,0 +1,20 @@
+# Each page blueprint must have a title, the title may be different from the file name
+title: Test
+
+# Each page can have an icon that is shown in page listings when no preview image is available.
+icon: 🏠
+
+
+# Here we define an info section and a pages section (`photography`)
+sections:
+  content:
+    type: fields
+    fields:
+      headline:
+        type: text
+        width: 1/2
+      gap:
+        width: 1/2
+      subheadline:
+        type: text
+        width: 1/2

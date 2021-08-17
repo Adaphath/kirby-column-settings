@@ -1,0 +1,6 @@
+name: Section
+type: blocks
+label: Section
+fieldsets:
+  row-block:
+    extends: blocks/row

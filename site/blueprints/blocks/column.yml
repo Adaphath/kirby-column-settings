@@ -1,0 +1,29 @@
+name: Column
+preview: fields # required
+wysiwyg: true # recommended
+label: false
+max: 1
+tabs:
+  content:
+    fields:
+      text:
+        label: Content
+        type: blocks
+        fieldsets:
+          - text
+          - heading
+          - service
+  styles:
+    fields:
+      class:
+        type: text
+        width: 1/3
+      settingsId:
+        type: text
+        width: 1/3
+      style:
+        type: text
+        width: 1/3
+      image:
+        label: Background image
+        type: files

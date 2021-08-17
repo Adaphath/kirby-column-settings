@@ -1,0 +1,12 @@
+name: Service
+preview: fields # required
+wysiwyg: true # recommended
+label: false
+tabs:
+  content:
+    label: Inhalt
+    fields:
+      service:
+        label: Servicepage
+        type: pages
+        max: 1
