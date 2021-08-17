@@ -76,6 +76,7 @@ tabs:
         type: files
 ```
 ![image info](./screenshot_1.png)
+![image info](./screenshot_2.png)
 
 
 ## Features
