@@ -1,5 +1,5 @@
 
-# Seperate settings on columns (with Kirby Blocks)
+# Separate settings on columns (with Kirby Blocks)
 
 With the current layout- and blocks-system it is not possible to get seperate settings per column
 and maintaining an okay workflow in the panel.
