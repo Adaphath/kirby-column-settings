@@ -1,40 +1,95 @@
-<img src="http://getkirby.com/assets/images/github/starterkit.jpg" width="300">
+
+# Seperate settings on columns (with Kirby Blocks)
+
+With the current layout- and blocks-system it is not possible to get seperate settings per column
+and maintaining an okay workflow in the panel.
+First idea was to nest layouts in layouts but this was not really practical.
+
+The current idea is to have a layout that is able to span mutliple rows and represents a section wrapper.
+Inside these rows are column-blocks which have seperate settings and another inner-block that represents the content of the column.
 
 
-**Kirby: the CMS that adapts to any project, loved by developers and editors alike.**  
-The Starterkit is a full-blown Kirby installation with a lot of example content, blueprints, templates and more.  
-It is ideal for new users to explore many of Kirby's options and get to know the Panel.
+## Layout organisation:
+- Section (type: layout)
+  - has settings per se from layout
+  - represents rows / section
+- Row (represented by sections)
+  - possible to get seperate settings per row by adding multiple sections
+```yaml
+name: Rows
+type: layout
+layouts:
+  - "1/1"
+  - "1/2, 1/2"
+  - "1/4, 1/4, 1/4, 1/4"
+  - "1/3, 2/3"
+  - "2/3, 1/3"
+  - "1/3, 1/3, 1/3"
+  - "1/1, 1/2, 1/2"
+settings:
+  fields:
+    class:
+      type: text
+      width: 1/2
+    id:
+      type: text
+      width: 1/2
+    image:
+      label: Background image
+      type: files
+fieldsets:
+  column:
+    extends: blocks/column
+```
+- Column (type: blocks)
+  - inner content (type: blocks)
+    - is a nested block that gets rendered later on
+  - possible to get seperate settings with a custom tab
+```yaml
+name: Column
+preview: fields # required for nested blocks preview (Kirby-Fields-Block Plugin)
+wysiwyg: true # required for nested blocks preview (Kirby-Fields-Block Plugin)
+label: false
+max: 1
+tabs:
+  content:
+    fields:
+      text:
+        label: Content
+        type: blocks
+        fieldsets:
+          - text
+          - heading
+  styles:
+    fields:
+      class:
+        type: text
+        width: 1/3
+      settingsId:
+        type: text
+        width: 1/3
+      style:
+        type: text
+        width: 1/3
+      image:
+        label: Background image
+        type: files
+```
+![image info](./screenshot_1.png)
 
-You can learn more about Kirby at [getkirby.com](https://getkirby.com).
 
-<img src="http://getkirby.com/assets/images/github/starterkit-screen.png" />
+## Features
 
-### Try Kirby for free  
-You can try Kirby and the Starterkit on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://getkirby.com/buy).
+- full preview in panel
+- seperate settings for rows / columns
 
-The starterkit is a demo of basic Kirby features. It's not recommended to be used "as is" in production. Please, follow our documentation closely for more features and guides on how to build secure, high-quality websites with Kirby.
+## Problems
+- little bit clunky when using multiple blocks in one column
 
-### Get going
-Read our guide on [how to get started with Kirby](https://getkirby.com/docs/guide/quickstart).
-
-You can download the latest version of the Starterkit from https://download.getkirby.com/.  
-If you are familiar with Git, you can clone Kirby's Starterkit repository from Github.
-
-    git clone https://github.com/getkirby/starterkit.git
-
-## What's Kirby?
-- **[getkirby.com](https://getkirby.com)** – Get to know the CMS.
-- **[Try it](https://getkirby.com/try)** – Take a test ride with our online demo. Or download one of our kits to get started.
-- **[Documentation](https://getkirby.com/docs/guide)** – Read the official guide, reference and cookbook recipes.
-- **[Issues](https://github.com/getkirby/kirby/issues)** – Report bugs and other problems.
-- **[Feedback](https://feedback.getkirby.com)** – You have an idea for Kirby? Share it.
-- **[Forum](https://forum.getkirby.com)** – Whenever you get stuck, don't hesitate to reach out for questions and support.
-- **[Discord](https://chat.getkirby.com)** – Hang out and meet the community.
-- **[YouTube](https://youtube.com/kirbyCasts)** - Watch the latest video tutorials visually with Bastian.
-- **[Twitter](https://twitter.com/getkirby)** – Spread the word.
-- **[Instagram](https://www.instagram.com/getkirby/)** – Share your creations: #madewithkirby.
-
----
-
-© 2009-2020 Bastian Allgeier (Bastian Allgeier GmbH)  
-[getkirby.com](https://getkirby.com) · [License agreement](https://getkirby.com/license)
+## Rendering of content
+Template for column.yml:
+```html
+<div class="<?= $block->class()?>" style="<?= $block->style() ?>" id="<?= $block->settingsId() ?>">
+  <?= $block->content()->text()->toBlocks() ?>
+</div>
+```
